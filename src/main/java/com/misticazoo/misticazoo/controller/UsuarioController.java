@@ -1,12 +1,10 @@
 package com.misticazoo.misticazoo.controller;
 
+import com.misticazoo.misticazoo.dto.UsuarioRequestDTO;
 import com.misticazoo.misticazoo.model.Usuario;
 import com.misticazoo.misticazoo.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -26,5 +24,15 @@ public class UsuarioController {
     public Usuario findById(@PathVariable("id") Integer id) throws IllegalAccessException {
         return this.repository.findById(id)
                 .orElseThrow(() -> new IllegalAccessException("Usuário não encontrado"));
+    }
+
+    @PostMapping
+    public Usuario save(@RequestBody UsuarioRequestDTO dto) {
+        Usuario usuario = new Usuario();
+        usuario.setNome(dto.nome());
+        usuario.setEmail(dto.email());
+        usuario.setSenha(dto.senha());
+
+        return this.repository.save(usuario);
     }
 }
