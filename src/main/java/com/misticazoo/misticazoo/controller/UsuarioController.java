@@ -4,6 +4,7 @@ import com.misticazoo.misticazoo.dto.UsuarioRequestDTO;
 import com.misticazoo.misticazoo.model.Usuario;
 import com.misticazoo.misticazoo.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,8 +17,9 @@ public class UsuarioController {
     private UsuarioRepository repository;
 
     @GetMapping
-    public List<Usuario> findAll() {
-        return this.repository.findAll();
+    public ResponseEntity<List<Usuario>> findAll() {
+        List<Usuario> usuarios = this.repository.findAll();
+        return ResponseEntity.ok(usuarios);
     }
 
     @GetMapping("/{id}")
@@ -27,12 +29,25 @@ public class UsuarioController {
     }
 
     @PostMapping
-    public Usuario save(@RequestBody UsuarioRequestDTO dto) {
+    public ResponseEntity<Usuario> save(@RequestBody UsuarioRequestDTO dto) {
+        if (dto.nome().isEmpty() || dto.email().isEmpty() || dto.senha().isEmpty()) {
+            return ResponseEntity.status(400).build();
+        }
+
         Usuario usuario = new Usuario();
         usuario.setNome(dto.nome());
         usuario.setEmail(dto.email());
         usuario.setSenha(dto.senha());
 
-        return this.repository.save(usuario);
+        this.repository.save(usuario);
+        return ResponseEntity.ok(usuario);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Integer id) throws IllegalAccessException {
+        Usuario usuario = this.repository.findById(id)
+                .orElseThrow(() -> new IllegalAccessException("Usuário não encontrado"));
+        this.repository.delete(usuario);
+        return ResponseEntity.noContent().build();
     }
 }
