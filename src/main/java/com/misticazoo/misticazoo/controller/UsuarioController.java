@@ -50,4 +50,19 @@ public class UsuarioController {
         this.repository.delete(usuario);
         return ResponseEntity.noContent().build();
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Usuario> update(@PathVariable Integer id, @RequestBody UsuarioRequestDTO dto) throws IllegalAccessException {
+        if (dto.nome().isEmpty() || dto.email().isEmpty() || dto.senha().isEmpty()) {
+            return ResponseEntity.status(400).build();
+        }
+
+        Usuario usuario = this.repository.findById(id)
+                .orElseThrow(() -> new IllegalAccessException("Usuário não encontrado"));
+
+        usuario.setNome(dto.nome());
+
+        this.repository.save(usuario);
+        return ResponseEntity.ok(usuario);
+    }
 }
