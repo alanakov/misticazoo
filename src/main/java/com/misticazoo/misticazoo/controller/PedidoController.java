@@ -50,19 +50,4 @@ public class PedidoController {
         this.repository.delete(pedido);
         return ResponseEntity.noContent().build();
     }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<Pedido> update(@PathVariable Integer id, @RequestBody PedidoRequestDTO dto) throws IllegalAccessException {
-        if (dto.dataPedido().isEmpty() || dto.status().isEmpty() || dto.valorTotal() == null) {
-            return ResponseEntity.status(400).build();
-        }
-
-        Pedido pedido = this.repository.findById(id)
-                .orElseThrow(() -> new IllegalAccessException("Pedido não encontrado"));
-
-        pedido.setNome(dto.nome());
-
-        this.repository.save(pedido);
-        return ResponseEntity.ok(pedido);
-    }
 }

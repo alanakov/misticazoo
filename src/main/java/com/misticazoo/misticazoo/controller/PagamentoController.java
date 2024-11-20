@@ -51,19 +51,4 @@ public class PagamentoController {
         this.repository.delete(pagamento);
         return ResponseEntity.noContent().build();
     }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<Pagamento> update(@PathVariable Integer id, @RequestBody PagamentoRequestDTO dto) throws IllegalAccessException {
-        if (dto.dataPagamento().isEmpty() || dto.valor() == null || dto.metodo().isEmpty() || dto.status().isEmpty()) {
-            return ResponseEntity.status(400).build();
-        }
-
-        Pagamento pagamento = this.repository.findById(id)
-                .orElseThrow(() -> new IllegalAccessException("Pagamento não encontrado"));
-
-        pagamento.setNome(dto.nome());
-
-        this.repository.save(pagamento);
-        return ResponseEntity.ok(pagamento);
-    }
 }
