@@ -1,7 +1,11 @@
 package com.misticazoo.misticazoo.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -20,7 +24,11 @@ public class Usuario {
     private String senha;
 
     @Column(name = "data_cadastro")
-    private String dataCadastro;
+    private LocalDateTime dataCadastro;
+
+    @OneToMany(mappedBy = "usuario")
+    @JsonIgnore
+    private List<Pedido> pedidos;
 
     public Integer getIdUsuario() {
         return idUsuario;
@@ -54,12 +62,20 @@ public class Usuario {
         this.senha = senha;
     }
 
-    public String getDataCadastro() {
+    public LocalDateTime getDataCadastro() {
         return dataCadastro;
     }
 
-    public void setDataCadastro(String dataCadastro) {
+    public void setDataCadastro(LocalDateTime dataCadastro) {
         this.dataCadastro = dataCadastro;
+    }
+
+    public List<Pedido> getPedidos() {
+        return pedidos;
+    }
+
+    public void setPedidos(List<Pedido> pedidos) {
+        this.pedidos = pedidos;
     }
 
     @Override

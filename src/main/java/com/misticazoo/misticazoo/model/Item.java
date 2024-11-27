@@ -2,6 +2,8 @@ package com.misticazoo.misticazoo.model;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table
 public class Item {
@@ -15,9 +17,12 @@ public class Item {
 
     private String descricao;
 
-    private Integer preco;
+    private double preco;
 
     private Integer estoque;
+
+    @OneToMany(mappedBy = "item")
+    private List<ItemPedido> itensPedido;
 
     public Integer getIdItem() {
         return idItem;
@@ -43,11 +48,11 @@ public class Item {
         this.descricao = descricao;
     }
 
-    public Integer getPreco() {
+    public double getPreco() {
         return preco;
     }
 
-    public void setPreco(Integer preco) {
+    public void setPreco(double preco) {
         this.preco = preco;
     }
 

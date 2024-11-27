@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -30,12 +31,12 @@ public class PedidoController {
 
     @PostMapping
     public ResponseEntity<Pedido> save(@RequestBody PedidoRequestDTO dto) {
-        if (dto.dataPedido().isEmpty() || dto.status().isEmpty() || dto.valorTotal() == null) {
+        if (dto.dataPedido().isEmpty() || dto.status().isEmpty() || dto.valorTotal() == 0) {
             return ResponseEntity.status(400).build();
         }
 
         Pedido pedido = new Pedido();
-        pedido.setDataPedido(dto.dataPedido());
+        pedido.setDataPedido(LocalDateTime.parse(dto.dataPedido()));
         pedido.setStatus(dto.status());
         pedido.setValorTotal(dto.valorTotal());
 

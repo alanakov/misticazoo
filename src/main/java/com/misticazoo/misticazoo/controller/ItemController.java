@@ -30,7 +30,7 @@ public class ItemController {
 
     @PostMapping
     public ResponseEntity<Item> save(@RequestBody ItemRequestDTO dto) {
-        if (dto.nome().isEmpty() || dto.descricao().isEmpty() || dto.preco() == null || dto.estoque() == null) {
+        if (dto.nome().isEmpty() || dto.descricao().isEmpty() || dto.preco() == 0 || dto.estoque() == null) {
             return ResponseEntity.status(400).build();
         }
 
@@ -54,7 +54,7 @@ public class ItemController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Item> update(@PathVariable Integer id, @RequestBody ItemRequestDTO dto) throws IllegalAccessException {
-        if (dto.nome().isEmpty() || dto.descricao().isEmpty() || dto.preco() == null || dto.estoque() == null) {
+        if (dto.nome().isEmpty() || dto.descricao().isEmpty() || dto.preco() == 0 || dto.estoque() == null) {
             return ResponseEntity.status(400).build();
         }
 

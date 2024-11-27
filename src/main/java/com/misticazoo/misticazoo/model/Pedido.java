@@ -2,6 +2,9 @@ package com.misticazoo.misticazoo.model;
 
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+
 @Entity
 @Table
 public class Pedido {
@@ -9,40 +12,33 @@ public class Pedido {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_pedido")
-    private String idPedido;
-
-    @Column(name = "id_usuario")
-    private Integer idUsuario;
+    private Integer idPedido;
 
     @Column(name = "data_pedido")
-    private String dataPedido;
+    private LocalDateTime dataPedido;
 
     private String status;
 
     @Column(name = "valor_total")
-    private Integer valorTotal;
+    private double valorTotal;
 
-    public String getIdPedido() {
+    @ManyToOne
+    @JoinColumn(name = "id_usuario", referencedColumnName = "id_usuario")
+    private Usuario usuario;
+
+    public Integer getIdPedido() {
         return idPedido;
     }
 
-    public void setIdPedido(String idPedido) {
+    public void setIdPedido(Integer idPedido) {
         this.idPedido = idPedido;
     }
 
-    public Integer getIdUsuario() {
-        return idUsuario;
-    }
-
-    public void setIdUsuario(Integer idUsuario) {
-        this.idUsuario = idUsuario;
-    }
-
-    public String getDataPedido() {
+    public LocalDateTime getDataPedido() {
         return dataPedido;
     }
 
-    public void setDataPedido(String dataPedido) {
+    public void setDataPedido(LocalDateTime dataPedido) {
         this.dataPedido = dataPedido;
     }
 
@@ -54,11 +50,19 @@ public class Pedido {
         this.status = status;
     }
 
-    public Integer getValorTotal() {
+    public double getValorTotal() {
         return valorTotal;
     }
 
-    public void setValorTotal(Integer valorTotal) {
+    public void setValorTotal(double valorTotal) {
         this.valorTotal = valorTotal;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
 }

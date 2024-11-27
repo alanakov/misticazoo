@@ -30,7 +30,7 @@ public class PagamentoController {
 
     @PostMapping
     public ResponseEntity<Pagamento> save(@RequestBody PagamentoRequestDTO dto) {
-        if (dto.dataPagamento().isEmpty() || dto.valor() == null || dto.metodo().isEmpty() || dto.status().isEmpty()) {
+        if (dto.dataPagamento().isEmpty() || dto.valor() == 0 || dto.metodo().isEmpty() || dto.status().isEmpty()) {
             return ResponseEntity.status(400).build();
         }
 

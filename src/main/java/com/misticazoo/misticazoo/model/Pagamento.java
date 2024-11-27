@@ -2,6 +2,8 @@ package com.misticazoo.misticazoo.model;
 
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
+
 @Entity
 @Table
 public class Pagamento {
@@ -11,13 +13,14 @@ public class Pagamento {
     @Column(name = "id_pagamento")
     private Integer idPagamento;
 
-    @Column(name = "id_pedido")
-    private Integer idPedido;
+    @OneToOne
+    @JoinColumn(name = "id_pedido", referencedColumnName = "id_pedido", nullable = false)
+    private Pedido pedido;
 
     @Column(name = "data_pagamento")
     private String dataPagamento;
 
-    private Integer valor;
+    private double valor;
 
     private String metodo;
 
@@ -31,14 +34,6 @@ public class Pagamento {
         this.idPagamento = idPagamento;
     }
 
-    public Integer getIdPedido() {
-        return idPedido;
-    }
-
-    public void setIdPedido(Integer idPedido) {
-        this.idPedido = idPedido;
-    }
-
     public String getDataPagamento() {
         return dataPagamento;
     }
@@ -47,11 +42,11 @@ public class Pagamento {
         this.dataPagamento = dataPagamento;
     }
 
-    public Integer getValor() {
+    public double getValor() {
         return valor;
     }
 
-    public void setValor(Integer valor) {
+    public void setValor(double valor) {
         this.valor = valor;
     }
 
@@ -69,5 +64,13 @@ public class Pagamento {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public Pedido getPedido() {
+        return pedido;
+    }
+
+    public void setPedido(Pedido pedido) {
+        this.pedido = pedido;
     }
 }
