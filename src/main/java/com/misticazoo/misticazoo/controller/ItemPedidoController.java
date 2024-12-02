@@ -27,7 +27,6 @@ public class ItemPedidoController {
     private ItemRepository itemRepository;
 
 
-    // Buscar um item específico por ID
     @GetMapping("/{id}")
     public ResponseEntity<ItemPedido> findById(@PathVariable Integer id) {
         ItemPedido itemPedido = itemPedidoRepository.findById(id)
@@ -35,9 +34,12 @@ public class ItemPedidoController {
         return ResponseEntity.ok(itemPedido);
     }
 
-    // Adicionar um item ao pedido
     @PostMapping
     public ResponseEntity<ItemPedido> save(@RequestBody ItemPedidoRequestDTO dto) {
+        if (dto.quantidade() <= 0) {
+            throw new IllegalArgumentException("A quantidade deve ser maior que zero.");
+        }
+
         Pedido pedido = pedidoRepository.findById(dto.idPedido())
                 .orElseThrow(() -> new IllegalArgumentException("Pedido não encontrado"));
 
@@ -51,7 +53,7 @@ public class ItemPedidoController {
         return ResponseEntity.ok(itemPedido);
     }
 
-    // Atualizar a quantidade de um item no pedido
+
     @PutMapping("/{id}")
     public ResponseEntity<ItemPedido> update(@PathVariable Integer id, @RequestBody ItemPedidoRequestDTO dto) {
         ItemPedido itemPedido = itemPedidoRepository.findById(id)
@@ -64,7 +66,6 @@ public class ItemPedidoController {
         return ResponseEntity.ok(itemPedido);
     }
 
-    // Remover um item do pedido
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Integer id) {
         ItemPedido itemPedido = itemPedidoRepository.findById(id)

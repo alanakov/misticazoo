@@ -14,7 +14,7 @@ public class Pagamento {
     private Integer idPagamento;
 
     @OneToOne
-    @JoinColumn(name = "id_pedido", referencedColumnName = "id_pedido", nullable = false)
+    @JoinColumn(name = "id_pedido", referencedColumnName = "id_pedido")
     private Pedido pedido;
 
     @Column(name = "data_pagamento")

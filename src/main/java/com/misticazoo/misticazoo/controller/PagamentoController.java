@@ -18,21 +18,20 @@ public class PagamentoController {
 
     @GetMapping
     public ResponseEntity<List<Pagamento>> findAll() {
-        List<Pagamento> pagamentos = this.repository.findAll();
+        List<Pagamento> pagamentos = repository.findAll();
         return ResponseEntity.ok(pagamentos);
     }
 
     @GetMapping("/{id}")
-    public Pagamento findById(@PathVariable("id") Integer id) throws IllegalAccessException {
-        return this.repository.findById(id)
-                .orElseThrow(() -> new IllegalAccessException("Pagamento não encontrado"));
+    public ResponseEntity<Pagamento> findById(@PathVariable("id") Integer id) {
+        Pagamento pagamento = repository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Pagamento não encontrado"));
+        return ResponseEntity.ok(pagamento);
     }
 
     @PostMapping
     public ResponseEntity<Pagamento> save(@RequestBody PagamentoRequestDTO dto) {
-        if (dto.dataPagamento().isEmpty() || dto.valor() == 0 || dto.metodo().isEmpty() || dto.status().isEmpty()) {
-            return ResponseEntity.status(400).build();
-        }
+        validarPagamentoDTO(dto);
 
         Pagamento pagamento = new Pagamento();
         pagamento.setDataPagamento(dto.dataPagamento());
@@ -40,15 +39,25 @@ public class PagamentoController {
         pagamento.setMetodo(dto.metodo());
         pagamento.setStatus(dto.status());
 
-        this.repository.save(pagamento);
+        repository.save(pagamento);
         return ResponseEntity.ok(pagamento);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Integer id) throws IllegalAccessException {
-        Pagamento pagamento = this.repository.findById(id)
-                .orElseThrow(() -> new IllegalAccessException("Pagamento não encontrado"));
-        this.repository.delete(pagamento);
+    public ResponseEntity<Void> delete(@PathVariable Integer id) {
+        Pagamento pagamento = repository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Pagamento com ID " + id + " não encontrado"));
+
+        repository.delete(pagamento);
         return ResponseEntity.noContent().build();
+    }
+
+    private void validarPagamentoDTO(PagamentoRequestDTO dto) {
+        if (dto.valor() <= 0) {
+            throw new IllegalArgumentException("O valor do pagamento deve ser maior que zero.");
+        }
+        if (dto.metodo() == null || dto.metodo().isBlank()) {
+            throw new IllegalArgumentException("O método de pagamento é obrigatório.");
+        }
     }
 }

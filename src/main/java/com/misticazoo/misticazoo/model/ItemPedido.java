@@ -19,7 +19,6 @@ import jakarta.persistence.*;
         @JoinColumn(name = "id_item")
         private Item item;
 
-        @Column(name = "quantidade")
         private Integer quantidade;
 
         @Column(name = "preco")
