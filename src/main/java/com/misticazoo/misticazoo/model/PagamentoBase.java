@@ -25,4 +25,19 @@ public abstract class PagamentoBase {
     }
 
     public abstract void processarPagamento();
+
+    public class BoletoPagamento extends PagamentoBase {
+        @Override
+        public void processarPagamento() {
+            System.out.println("Processando pagamento com boleto bancário.");
+        }
+    }
+
+    public class CartaoPagamento extends PagamentoBase {
+        @Override
+        public void processarPagamento() {
+            System.out.println("Processando pagamento com cartão de crédito.");
+        }
+    }
+
 }
