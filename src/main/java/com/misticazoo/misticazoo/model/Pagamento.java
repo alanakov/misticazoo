@@ -3,8 +3,8 @@ package com.misticazoo.misticazoo.model;
 import jakarta.persistence.*;
 
 @Entity
-@Table
-public class Pagamento {
+@Table(name = "pagamento")
+public class Pagamento extends PagamentoBase {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,11 +18,12 @@ public class Pagamento {
     @Column(name = "data_pagamento")
     private String dataPagamento;
 
-    private double valor;
-
     private String metodo;
 
-    private String status;
+    @Override
+    public void processarPagamento() {
+        System.out.println("Processando pagamento de valor: " + getValor() + " para o pedido: " + pedido.getIdPedido());
+    }
 
     public Integer getIdPagamento() {
         return idPagamento;
@@ -40,28 +41,12 @@ public class Pagamento {
         this.dataPagamento = dataPagamento;
     }
 
-    public double getValor() {
-        return valor;
-    }
-
-    public void setValor(double valor) {
-        this.valor = valor;
-    }
-
     public String getMetodo() {
         return metodo;
     }
 
     public void setMetodo(String metodo) {
         this.metodo = metodo;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
     }
 
     public Pedido getPedido() {
