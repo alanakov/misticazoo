@@ -2,8 +2,6 @@ package com.misticazoo.misticazoo.model;
 
 import jakarta.persistence.*;
 
-import java.math.BigDecimal;
-
 @Entity
 @Table
 public class Pagamento {

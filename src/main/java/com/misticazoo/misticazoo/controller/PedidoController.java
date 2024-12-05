@@ -43,7 +43,6 @@ public class PedidoController {
         pedido.setDataPedido(LocalDateTime.parse(dto.dataPedido()));
         pedido.setStatus(dto.status());
 
-        // Calcular o valor total do pedido com base nos itens
         double valorTotal = calcularValorTotal(dto.idPedido());
         pedido.setValorTotal(valorTotal);
 
@@ -51,7 +50,6 @@ public class PedidoController {
         return ResponseEntity.ok(pedido);
     }
 
-    // Deletar um pedido pelo ID
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Integer id) {
         Pedido pedido = repository.findById(id)
@@ -61,14 +59,11 @@ public class PedidoController {
         return ResponseEntity.noContent().build();
     }
 
-    // auxilia o calculo do valor total do pedido baseado nos itens associados
     private double calcularValorTotal(Integer idPedido) {
-        // recupera os itens do pedido
         List<ItemPedido> itensPedido = itemPedidoRepository.findAll().stream()
                 .filter(itemPedido -> itemPedido.getPedido().getIdPedido().equals(idPedido))
                 .collect(Collectors.toList());
 
-        // soma os valores totais de cada item
         return itensPedido.stream()
                 .mapToDouble(itemPedido -> itemPedido.getPrecoTotal())
                 .sum();

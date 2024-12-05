@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,14 +38,11 @@ public class CategoriaController {
 
     @GetMapping("/{id}/itens")
     public ResponseEntity<List<Item>> getItensByCategoria(@PathVariable Integer id) {
-        // Busca a categoria pelo ID
         Categoria categoria = repository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Categoria não encontrada"));
 
-        // Busca todos os itens associados à categoria
         List<Item> itens = itemRepository.findByCategoria(categoria);
 
-        // Retorna os itens
         return ResponseEntity.ok(itens);
     }
 
@@ -61,12 +57,10 @@ public class CategoriaController {
         categoria.setNome(dto.nome());
         categoria.setDescricao(dto.descricao());
 
-        // Caso tenha imagem_url, você pode adicionar isso se necessário
         if (dto.imagemUrl() != null && !dto.imagemUrl().trim().isEmpty()) {
             categoria.setImagemUrl(dto.imagemUrl().trim());
         }
 
-        // Salvando a categoria no banco de dados
         Categoria savedCategoria = repository.save(categoria);
 
         return ResponseEntity.ok(categoria);
